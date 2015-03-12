@@ -15,7 +15,7 @@ var inter;
 var time = 100;
 var iterat;
 
-function elem(head, sock, id, left, up, right, down){
+function elem(head, sock, id, left, up, right, down) {
     this.id = id;
     this.sockets = sock;
     this.left = left;
@@ -23,16 +23,14 @@ function elem(head, sock, id, left, up, right, down){
     this.up = up;
     this.down = down;
     this.head = head;
+    this.rot = function () {
+        var tmp = this.up;
+        this.up = this.left;
+        this.left = this.down;
+        this.down = this.right;
+        this.right = tmp;
+    };
 }
-/*
-rot = function(){
-    var tmp = this.up;
-    this.up = this.left;
-    this.left = this.down;
-    this.down = this.right;
-    this.right = tmp;
-};
-*/
 
 $(document).ready(function(){
     $("#score").fadeOut();
@@ -90,6 +88,7 @@ function newGame(){
             case 87: /* W */
                 rotAngle += 90;
                 $("#" + currBlockId).rotate(rotAngle);
+                currBlock.rot();
                 break;
             case 83: /* S */
                 while(canMove("down")){
@@ -115,9 +114,10 @@ function newGame(){
 /* update function AND, if it possible, create new block */
 function update(){
     iterat++;
-    $("#score").html(posX);
-    $("#level").html(posY);
-    $("#line").html(currBlockId);
+    $("#score").html("left: "+currBlock.left);
+    $("#level").html("up: "+currBlock.up);
+    $("#line").html("right: "+currBlock.right);
+    $("#cube").html("down: "+currBlock.down);
     if(lines>7) {
         /* stop game loop*/
         clearInterval(inter);
@@ -230,6 +230,8 @@ function isBomb(el){
 /* remove html element and "ex" array element*/
 function delBomb(){
     /* TODO animation*/
+    $("#"+currBlockId).hide("explode",{pieces:32},200);
+    $("#myaudio")[0].play();
     $("#"+currBlockId).remove();
     ex[8*arrY+arrX] = null;
 }
