@@ -1,0 +1,39 @@
+#menu {
+    width: 200px;
+    height: 400px;
+    background-color: #333333;
+    float: left;
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+}
+#cont {
+    position: absolute;
+    left: 300px;
+    top: 50px;
+    width: 240px;
+    height: 300px;
+    background-color: #666666;
+    padding: 0px;
+    text-align: center;
+}
+button {
+    width: 100px;
+}
+.gameoverscreen {
+    position:absolute;
+    margin-left:125px;
+    margin-top:100px;
+    text-align:center;
+    background-color:#818181;
+    width:200px;
+    height:275px;
+    -moz-box-shadow: 0 0 10px #adadad;
+    -moz-border-radius: 5px;
+    -webkit-box-shadow: 0 0 10px #adadad;
+    -webkit-border-radius: 5px;
+}
+.gameoverscreen h2 { margin:20px; }
+.block {
+    position: absolute;
+}
