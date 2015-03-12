@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sounds/bomb.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sounds/bomb2.mp3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sounds/bomb3.mp3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/script.js" afterPath="$PROJECT_DIR$/js/script.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -45,8 +40,8 @@
       <file leaf-file-name="script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1957237" vertical-offset="1245" max-vertical-offset="5083">
-              <caret line="116" column="44" selection-start-line="116" selection-start-column="44" selection-end-line="116" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.05592105" vertical-offset="0" max-vertical-offset="5100">
+              <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -240,7 +235,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426166345350</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add bomb sound and explode anim. Add data rotation to block. Howewer, JQueryUI rotation work incorrectly!">
+      <created>1426176544178</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1426176544178</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -285,7 +286,8 @@
     </option>
     <MESSAGE value="Use &quot;uniqueId&quot; from JQueryUI to prevent bugs" />
     <MESSAGE value="Convert 'ex' array to associated array of Object &#10;(head, socket, id, left, up, right, down)&#10;head is link to the head of linked list (connected element)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Convert 'ex' array to associated array of Object &#10;(head, socket, id, left, up, right, down)&#10;head is link to the head of linked list (connected element)" />
+    <MESSAGE value="Add bomb sound and explode anim. Add data rotation to block. Howewer, JQueryUI rotation work incorrectly!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add bomb sound and explode anim. Add data rotation to block. Howewer, JQueryUI rotation work incorrectly!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -340,8 +342,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1957237" vertical-offset="1245" max-vertical-offset="5083">
-          <caret line="116" column="44" selection-start-line="116" selection-start-column="44" selection-end-line="116" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.05592105" vertical-offset="0" max-vertical-offset="5100">
+          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
           <folding />
         </state>
       </provider>

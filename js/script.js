@@ -1,6 +1,6 @@
 var score = 0;
 var level = 1;
-var difficulty = 500;
+var difficulty = 800;
 var lines = 0;
 var gameState = 0;
 var currBlockId = 0;
@@ -162,6 +162,7 @@ function update(){
 
 /* create and append new random block */
 function createBlock(){
+    rotAngle=0;
     /* create new img block */
     var block = document.createElement("img");
     $(block).attr("class","block");
