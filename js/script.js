@@ -1,6 +1,6 @@
 var score = 0;
 var level = 1;
-var difficulty = 800;
+var difficulty = 1000;
 var lines = 0;
 var gameState = 0;
 var currBlockId = 0;
