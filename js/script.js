@@ -14,6 +14,7 @@ var ex = [];
 var inter;
 var time = 100;
 var iterat;
+var canUpdate = true;
 
 function elem(head, sock, id, left, up, right, down) {
     this.id = id;
@@ -50,6 +51,43 @@ $(document).ready(function(){
     });
 });
 
+function keyHand(e){
+    e = e || window.event;
+    score = e.keyCode;
+    switch(e.keyCode) {
+        case 65: /* A */
+            if (canMove("left")) {
+                posX -= 30;
+                arrX--;
+            }
+            break;
+        case 68: /* D */
+            if (canMove("right")) {
+                posX += 30;
+                arrX++;
+            }
+            break;
+        case 87: /* W */
+            rotAngle += 90;
+            $("#" + currBlockId).rotate(rotAngle);
+            currBlock.rot();
+            break;
+        case 83: /* S */
+            while (canMove("down")) {
+                posY += 30;
+                arrY--;
+            }
+            /* this cell if full */
+            setStatus(arrX, arrY, currBlock);
+            /* our block has bottomed
+             * check MAX line to define end of gamege
+             * and change gameStatus */
+            lines = getMaxLine();
+            gameState = 3;
+            break;
+    }
+}
+
 /* start GAME from the beginning */
 function newGame(){
     iterat = 0;
@@ -63,48 +101,16 @@ function newGame(){
     posY = 0;
     arrX = 0;
     arrY = 9;
+    canUpdate = true;
     /* refresh array */
     for(var i=0; i<80; i++) ex[i]=null;
     clearInterval(inter);
     gameState = 1; /* we can create new block */
 
-  /*  handle keys event */
-    $(document).keydown(function(e) {
-        e = e || window.event;
-        score = e.keyCode;
-        switch(e.keyCode){
-            case 65: /* A */
-                if (canMove("left")){
-                    posX -= 30;
-                    arrX --;
-                }
-                break;
-            case 68: /* D */
-                if(canMove("right")){
-                    posX += 30;
-                    arrX ++;
-                }
-                break;
-            case 87: /* W */
-                rotAngle += 90;
-                $("#" + currBlockId).rotate(rotAngle);
-                currBlock.rot();
-                break;
-            case 83: /* S */
-                while(canMove("down")){
-                    posY +=30;
-                    arrY --;
-                }
-                /* this cell if full */
-                setStatus(arrX, arrY, currBlock);
-               /* our block has bottomed
-                * check MAX line to define end of gamege
-                * and change gameStatus */
-                lines = getMaxLine();
-                gameState = 3;
-                break;
-        }
-    });
+    /* this for non duplicate event handler, when press again 'Play' */
+    $(document).off('keydown', keyHand);
+    /*  handle keys event */
+    $(document).on('keydown', keyHand);
 
     /* create game loop with id=inter */
     inter = setInterval(update,time);
@@ -113,49 +119,49 @@ function newGame(){
 
 /* update function AND, if it possible, create new block */
 function update(){
-    iterat++;
-    $("#score").html("left: "+currBlock.left);
-    $("#level").html("up: "+currBlock.up);
-    $("#line").html("right: "+currBlock.right);
-    $("#cube").html("down: "+currBlock.down);
-    if(lines>7) {
-        /* stop game loop*/
-        clearInterval(inter);
-        $("#" + currBlockId).css("left", posX);
-        $("#" + currBlockId).css("top", posY);
-        gameoverScreen();
-    }
-    else {
-        if (gameState == 1) {
-            posX = 0;
-            posY = 0;
-            arrX = 0;
-            arrY = 9;
-            createBlock();
-        } else
-        if (gameState == 2){
-            if(iterat >= difficulty/time){
-                if(canMove("down")){
-                    posY +=30;
-                    arrY --;
-                } else {
-                    setStatus(arrX, arrY, currBlock);
-                    lines = getMaxLine();
-                    gameState = 3;
-                }
-                iterat = 0;
-            }
+    if(canUpdate) {
+        iterat++;
+        $("#score").html("left: " + currBlock.left);
+        $("#level").html("up: " + currBlock.up);
+        $("#line").html("right: " + currBlock.right);
+        $("#cube").html("down: " + currBlock.down);
+        if (lines > 7) {
+            /* stop game loop*/
+            clearInterval(inter);
             $("#" + currBlockId).css("left", posX);
             $("#" + currBlockId).css("top", posY);
-        } else
-        if (gameState == 3){
-            $("#" + currBlockId).css("left", posX);
-            $("#" + currBlockId).css("top", posY);
-            /* find connection and definded bomb */
-            doChain();
-            gameState = 1;
+            gameoverScreen();
         }
+        else {
+            if (gameState == 1) {
+                posX = 0;
+                posY = 0;
+                arrX = 0;
+                arrY = 9;
+                createBlock();
+            } else if (gameState == 2) {
+                if (iterat >= difficulty / time) {
+                    if (canMove("down")) {
+                        posY += 30;
+                        arrY--;
+                    } else {
+                        setStatus(arrX, arrY, currBlock);
+                        lines = getMaxLine();
+                        gameState = 3;
+                    }
+                    iterat = 0;
+                }
+                $("#" + currBlockId).css("left", posX);
+                $("#" + currBlockId).css("top", posY);
+            } else if (gameState == 3) {
+                $("#" + currBlockId).css("left", posX);
+                $("#" + currBlockId).css("top", posY);
+                /* find connection and definded bomb */
+                doChain();
+                gameState = 1;
+            }
 
+        }
     }
 }
 
@@ -202,6 +208,8 @@ function createBlock(){
             break;
     }
     gameState = 2; /* the block movement */
+    canUpdate = false;
+    setTimeout(function(){ canUpdate=true;}, 1000);
 }
 
 function doChain(){
@@ -230,7 +238,6 @@ function isBomb(el){
 
 /* remove html element and "ex" array element*/
 function delBomb(){
-    /* TODO animation*/
     $("#"+currBlockId).hide("explode",{pieces:32},200);
     $("#myaudio")[0].play();
     $("#"+currBlockId).remove();
@@ -239,7 +246,9 @@ function delBomb(){
 
 /* remove html elements and 'ex' array elements from thead*/
 function delChain(thead){
-
+    /* this timeout for animation (for prevent creation a new block before full  explosion */
+    canUpdate = false;
+    setTimeout(function(){ canUpdate = true},1000);
 }
 
 
