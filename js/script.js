@@ -95,7 +95,7 @@ function update(){
     iterat++;
     $("#score").html(posX);
     $("#level").html(posY);
-    $("#line").html(lines);
+    $("#line").html(currBlockId);
     if(lines>7) {
         clearInterval(inter);
         $("#" + currBlockId).css("left", posX);
@@ -145,9 +145,10 @@ function createBlock(){
     /* create new img block */
     var block = document.createElement("img");
     $(block).attr("class","block");
-    var tId = "block" + Math.floor(Math.random()*30000);
-    $(block).attr("id", tId);
-    currBlockId = tId;
+    $(block).uniqueId();
+  /*  var tId = "block" + Math.floor(Math.random()*30000);
+    $(block).attr("id", tId); */
+    currBlockId = $(block).prop('id');
     var i = Math.floor(Math.random()*6) + 1; /* calc random index of next element in [1..6] */
     var imgSrc="images/" + i + ".png";
     $(block).attr("src",imgSrc);
