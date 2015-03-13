@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/script.js" afterPath="$PROJECT_DIR$/js/script.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Trubis.iws" />
@@ -31,8 +31,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.038462" vertical-offset="0" max-vertical-offset="561">
-              <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+            <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="578">
+              <caret line="18" column="39" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -41,12 +41,19 @@
       <file leaf-file-name="script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8684211" vertical-offset="2039" max-vertical-offset="4233">
-              <caret line="211" column="47" selection-start-line="211" selection-start-column="47" selection-end-line="211" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.2450658" vertical-offset="2197" max-vertical-offset="4352">
+              <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="57" />
               <folding>
+                <element signature="e#1011#1457#0" expanded="false" />
                 <element signature="n#!!block;n#keyHand#0" expanded="false" />
-                <element signature="e#3120#3330#0" expanded="false" />
-                <element signature="e#5292#5927#0" expanded="false" />
+                <element signature="n#!!block;n#newGame#0" expanded="false" />
+                <element signature="e#3609#3819#0" expanded="false" />
+                <element signature="n#!!block;n#createBlock#0" expanded="false" />
+                <element signature="n#!!block;n#isBomb#0" expanded="false" />
+                <element signature="n#!!block;n#gameoverScreen#0" expanded="false" />
+                <element signature="n#!!block;n#setStatus#0" expanded="false" />
+                <element signature="n#!!block;n#getLineStatus#0" expanded="false" />
+                <element signature="n#!!block;n#getMaxLine#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -70,8 +77,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/script.js" />
       </list>
     </option>
@@ -277,7 +284,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426181328667</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="key handle fix, create animation timeout">
+      <created>1426188320509</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1426188320509</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -324,7 +337,8 @@
     <MESSAGE value="Convert 'ex' array to associated array of Object &#10;(head, socket, id, left, up, right, down)&#10;head is link to the head of linked list (connected element)" />
     <MESSAGE value="Add bomb sound and explode anim. Add data rotation to block. Howewer, JQueryUI rotation work incorrectly!" />
     <MESSAGE value="rotation correct" />
-    <option name="LAST_COMMIT_MESSAGE" value="rotation correct" />
+    <MESSAGE value="key handle fix, create animation timeout" />
+    <option name="LAST_COMMIT_MESSAGE" value="key handle fix, create animation timeout" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -379,20 +393,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.038462" vertical-offset="0" max-vertical-offset="561">
-          <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+        <state vertical-scroll-proportion="-11.769231" vertical-offset="0" max-vertical-offset="578">
+          <caret line="18" column="39" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8684211" vertical-offset="2039" max-vertical-offset="4233">
-          <caret line="211" column="47" selection-start-line="211" selection-start-column="47" selection-end-line="211" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.2450658" vertical-offset="2197" max-vertical-offset="4352">
+          <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="57" />
           <folding>
+            <element signature="e#1011#1457#0" expanded="false" />
             <element signature="n#!!block;n#keyHand#0" expanded="false" />
-            <element signature="e#3120#3330#0" expanded="false" />
-            <element signature="e#5292#5927#0" expanded="false" />
+            <element signature="n#!!block;n#newGame#0" expanded="false" />
+            <element signature="e#3609#3819#0" expanded="false" />
+            <element signature="n#!!block;n#createBlock#0" expanded="false" />
+            <element signature="n#!!block;n#isBomb#0" expanded="false" />
+            <element signature="n#!!block;n#gameoverScreen#0" expanded="false" />
+            <element signature="n#!!block;n#setStatus#0" expanded="false" />
+            <element signature="n#!!block;n#getLineStatus#0" expanded="false" />
+            <element signature="n#!!block;n#getMaxLine#0" expanded="false" />
           </folding>
         </state>
       </provider>

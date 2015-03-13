@@ -4,7 +4,7 @@ var difficulty = 800;
 var lines = 0;
 var gameState = 0;
 var currBlockId = 0;
-var currBlock = 0;
+var currBlock = null;
 var rotAngle = 0;
 var posX = 0;
 var posY = 0;
@@ -16,7 +16,14 @@ var time = 100;
 var iterat;
 var canUpdate = true;
 
+var graph = {open: 0, data: null, next: null}; // open - open sockets in all chain; data - pointer to graphElem
+var graphElem = {data: null, next: null}; // data - currBlock;
+var graphPointer = 0; // number of unique chain
+var newConnection = true; // flag for new currBlock
+
 function elem(head, sock, id, left, up, right, down) {
+    this.next = null;
+    this.x = -1;
     this.id = id;
     this.sockets = sock;
     this.left = left;
@@ -90,11 +97,18 @@ function keyHand(e){
 
 /* start GAME from the beginning */
 function newGame(){
+    newConnection = true;
+    graph.data = null;
+    graph.next = null;
+    graph.open = 0;
+    graphElem.data = null;
+    graphElem.next = null;
+    graphPointer = 0;
     iterat = 0;
     score = 0;
     level = 1;
     lines = 1;
-    currBlock = 0;
+    currBlock = null;
     currBlockId = 0;
     rotAngle = 0;
     posX = 0;
@@ -156,7 +170,7 @@ function update(){
             } else if (gameState == 3) {
                 $("#" + currBlockId).css("left", posX);
                 $("#" + currBlockId).css("top", posY);
-                /* find connection and definded bomb */
+                /* find connection and determination bomb */
                 doChain();
                 gameState = 1;
             }
@@ -212,6 +226,8 @@ function createBlock(){
     setTimeout(function(){ canUpdate=true;}, 1000);
 }
 
+
+/* -------------------------------------- Part of game logic, connected with tube chain and bomb ------------------*/
 function doChain(){
     if(isBomb(currBlock)) {
         delBomb();
@@ -219,19 +235,10 @@ function doChain(){
         if( (arrY-1) > 0)
         delChain(ex[8*(arrY-1)+arrX].head);
     } else {
-        /* TODO create chain */
+        addChain();
     }
 }
-/* return TRUE if there is connection between current element of ex array and around elements */
-function isConnect(){
-    // this is a BOMB
-    if(currBlock.sockets == 0) {
-        if(arrY-1 > 9 || (arrY-1) < 0) delBomb();
-        if(typeof ex[8*y+x] == 'undefined' || ex[8*y+x] == 0) return true;
-        return false;
-        delChain(currBlock);
-    }
-}
+
 function isBomb(el){
     return el.sockets == 0;
 }
@@ -244,14 +251,108 @@ function delBomb(){
     ex[8*arrY+arrX] = null;
 }
 
+function delBlock(x){
+    $("#"+ex[x].id).hide("explode",{pieces:16},100);
+    $("#myaudio")[1].play();
+    $("#"+ex[x].id).remove();
+    ex[x] = null;
+}
+
+function addChain(){
+    /* first element */
+    if(graphPointer == 0){
+        graph.data = currBlock;
+        graph.next = null;
+        graph.open = currBlock.sockets;
+
+        currBlock.head = graph;
+        graphPointer++;
+    } else {
+        newConnection=true;
+
+        // TODO add find connection AND unite 2 chain !!!
+        if(currBlock.right == 1) {
+            // if it is the connection
+            if((arrX+1 < 7) && (ex[8*arrY+arrX+1] != null) && (ex[8*arrY+arrX+1].left == 1)) {
+                currBlock.head = ex[8*arrY+arrX+1].head;
+                addElem();
+                newConnection = false;
+            }
+        }
+        if(currBlock.down == 1) {
+            // if it is the connection
+            if( (arrY-1 > 0) && (ex[8*(arrY-1)+arrX] != null) && (ex[8*(arrY-1)+arrX].top == 1) ){
+
+            }
+        }
+        if(currBlock.left == 1) {
+
+        }
+        if(currBlock.top == 1) {
+
+        }
+        // the currBlock didn't connected to anyone
+
+        if(newConnection){
+            // go to the end of existed chain
+            var temp = graph;
+            for(var t=0; t<graphPointer-1; t++){
+                temp = temp.next;
+            }
+            var newGraph = new graph();
+            newGraph.data = currBlock;
+            newGraph.next = null;
+            newGraph.open = currBlock.sockets;
+
+            currBlock.head = newGraph;
+            temp.next = newGraph;
+            graphPointer++;
+        }
+
+        if(currBlock.head.open == 0) {
+            delChain(currBlock.head);
+            graphPointer--;
+        }
+    }
+}
+
+function addElem(){
+    currBlock.next = currBlock.head.data;
+    currBlock.head.data = currBlock;
+    currBlock.head.open += (currBlock.sockets - 2);
+}
+
 /* remove html elements and 'ex' array elements from thead*/
 function delChain(thead){
     /* this timeout for animation (for prevent creation a new block before full  explosion */
     canUpdate = false;
     setTimeout(function(){ canUpdate = true},1000);
+
+    delGraphElem(thead);
+
+    var temp = thead.data;
+    var a = temp.next;
+    while(a){
+        delBlock(temp.x);
+        temp = a;
+        a = temp.next;
+    }
+    delBlock(temp.x);
+    thead.data = null;
 }
 
-
+function delGraphElem(h){
+    if(h.data.id == graph.data.id) {
+        graph = h.next;
+        return;
+    }
+    var temp = graph;
+    while(temp.next.data.id != h.data.id){
+        temp = temp.next;
+    }
+    temp.next = temp.next.next;
+}
+/* -----------------------------------------------  GAME OVER -------------------------------------------------------*/
 /* append GAMEOVER screen*/
 function gameoverScreen(){
     var gameover = document.createElement("div");
@@ -266,6 +367,8 @@ function gameoverScreen(){
     $(gameover).prependTo("#cont");
 }
 
+
+/* ------------------------------------------------ Part connected with Ex matrix (player view logic) ---------------*/
 /* return TRUE when array cell is empty and we can move block in it*/
 function getStatus(x, y){
     if(x > 7 || x < 0 || y > 9 || y < 0) return false;
@@ -273,8 +376,10 @@ function getStatus(x, y){
     return false;
 }
 
+// set ex[8y+x] pointer to currBox; currBox.x -> ex[8*y+x]
 function setStatus(x, y, box){
     ex[8*y+x] = box;
+    box.x = 8*y+x;
 }
 
 /* return TRUE when line is ocupated*/
