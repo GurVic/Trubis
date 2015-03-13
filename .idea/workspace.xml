@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+    <list default="true" id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="Add unite 2 chain">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/script.js" afterPath="$PROJECT_DIR$/js/script.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -41,8 +40,8 @@
       <file leaf-file-name="script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2450658" vertical-offset="2197" max-vertical-offset="4352">
-              <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.8075658" vertical-offset="2501" max-vertical-offset="4675">
+              <caret line="310" column="15" selection-start-line="310" selection-start-column="15" selection-end-line="310" selection-end-column="15" />
               <folding>
                 <element signature="e#1011#1457#0" expanded="false" />
                 <element signature="n#!!block;n#keyHand#0" expanded="false" />
@@ -253,6 +252,9 @@
     </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="" />
@@ -290,7 +292,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426188320509</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add &quot;graph&quot; -  linked list, and did logical func with create and del chain">
+      <created>1426250111127</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1426250111127</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -338,7 +346,8 @@
     <MESSAGE value="Add bomb sound and explode anim. Add data rotation to block. Howewer, JQueryUI rotation work incorrectly!" />
     <MESSAGE value="rotation correct" />
     <MESSAGE value="key handle fix, create animation timeout" />
-    <option name="LAST_COMMIT_MESSAGE" value="key handle fix, create animation timeout" />
+    <MESSAGE value="Add &quot;graph&quot; -  linked list, and did logical func with create and del chain" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add &quot;graph&quot; -  linked list, and did logical func with create and del chain" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -401,8 +410,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2450658" vertical-offset="2197" max-vertical-offset="4352">
-          <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.8075658" vertical-offset="2501" max-vertical-offset="4675">
+          <caret line="310" column="15" selection-start-line="310" selection-start-column="15" selection-end-line="310" selection-end-column="15" />
           <folding>
             <element signature="e#1011#1457#0" expanded="false" />
             <element signature="n#!!block;n#keyHand#0" expanded="false" />

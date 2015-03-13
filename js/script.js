@@ -273,7 +273,7 @@ function addChain(){
         // TODO add find connection AND unite 2 chain !!!
         if(currBlock.right == 1) {
             // if it is the connection
-            if((arrX+1 < 7) && (ex[8*arrY+arrX+1] != null) && (ex[8*arrY+arrX+1].left == 1)) {
+            if((arrX+1 <= 7) && (ex[8*arrY+arrX+1] != null) && (ex[8*arrY+arrX+1].left == 1)) {
                 currBlock.head = ex[8*arrY+arrX+1].head;
                 addElem();
                 newConnection = false;
@@ -281,15 +281,34 @@ function addChain(){
         }
         if(currBlock.down == 1) {
             // if it is the connection
-            if( (arrY-1 > 0) && (ex[8*(arrY-1)+arrX] != null) && (ex[8*(arrY-1)+arrX].top == 1) ){
-
+            if( (arrY-1 >= 0) && (ex[8*(arrY-1)+arrX] != null) && (ex[8*(arrY-1)+arrX].top == 1) ){
+                // first connection
+                if(newConnection) {
+                    currBlock.head = ex[8*(arrY-1)+arrX].head;
+                    addElem();
+                    newConnection = false;
+                } else {
+                    // second connection. unite 2 chain
+                    var te = ex[8*(arrY-1)+arrX].head;
+                    currBlock.head.open += (te.open-2);
+                    var de = te.data;
+                    delGraphElem(te);
+                    te = de;
+                    while(de.next != null){
+                        de.head = currBlock.head;
+                        de = de.next;
+                    }
+                    de.head = currBlock.head;
+                    de.next = currBlock.head.data;
+                    currBlock.head.data = te;
+                }
             }
         }
         if(currBlock.left == 1) {
-
+        // TODO
         }
         if(currBlock.top == 1) {
-
+        // TODO
         }
         // the currBlock didn't connected to anyone
 
