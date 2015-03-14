@@ -21,7 +21,7 @@ var graphElem = {data: null, next: null}; // data - currBlock;
 var graphPointer = 0; // number of unique chain
 var newConnection = true; // flag for new currBlock
 
-function elem(head, sock, id, left, up, right, down) {
+function Elem(head, sock, id, left, up, right, down) {
     this.next = null;
     this.x = -1;
     this.id = id;
@@ -118,16 +118,16 @@ function newGame(){
     canUpdate = true;
     /* refresh array */
     for(var i=0; i<80; i++) ex[i]=null;
-    clearInterval(inter);
+    //clearInterval(inter);
     gameState = 1; /* we can create new block */
 
     /* this for non duplicate event handler, when press again 'Play' */
     $(document).off('keydown', keyHand);
     /*  handle keys event */
     $(document).on('keydown', keyHand);
-
     /* create game loop with id=inter */
-    inter = setInterval(update,time);
+    //inter = setInterval(update,time);
+    setTimeout(update, time);
 }
 
 
@@ -135,13 +135,13 @@ function newGame(){
 function update(){
     if(canUpdate) {
         iterat++;
-        $("#score").html("left: " + currBlock.left);
-        $("#level").html("up: " + currBlock.up);
+       $("#score").html("left: " + graphPointer);
+/*        $("#level").html("up: " + currBlock.up);
         $("#line").html("right: " + currBlock.right);
-        $("#cube").html("down: " + currBlock.down);
+        $("#cube").html("down: " + currBlock.down); */
         if (lines > 7) {
             /* stop game loop*/
-            clearInterval(inter);
+            //clearInterval(inter);
             $("#" + currBlockId).css("left", posX);
             $("#" + currBlockId).css("top", posY);
             gameoverScreen();
@@ -153,12 +153,15 @@ function update(){
                 arrX = 0;
                 arrY = 9;
                 createBlock();
-            } else if (gameState == 2) {
+            } else
+            if (gameState == 2) {
                 if (iterat >= difficulty / time) {
+                    //alert("state 2");
                     if (canMove("down")) {
                         posY += 30;
                         arrY--;
                     } else {
+                        //alert("x: "+arrX+" y: "+arrY);
                         setStatus(arrX, arrY, currBlock);
                         lines = getMaxLine();
                         gameState = 3;
@@ -167,16 +170,20 @@ function update(){
                 }
                 $("#" + currBlockId).css("left", posX);
                 $("#" + currBlockId).css("top", posY);
-            } else if (gameState == 3) {
+            } else
+            if (gameState == 3) {
+                //alert("3 state");
                 $("#" + currBlockId).css("left", posX);
                 $("#" + currBlockId).css("top", posY);
                 /* find connection and determination bomb */
                 doChain();
+                //alert("after doChain")
                 gameState = 1;
             }
 
         }
     }
+    setTimeout(update, time);
 }
 
 
@@ -189,7 +196,8 @@ function createBlock(){
     $(block).uniqueId();
     currBlockId = $(block).prop('id');
     /* calc random index of next element in [1..6] */
-    var i = Math.floor(Math.random()*6) + 1;
+    var i = Math.floor(Math.random()*2) + 1;
+    //i=2;
     var imgSrc="images/" + i + ".png";
     $(block).attr("src",imgSrc);
     $(block).appendTo("#cont");
@@ -203,27 +211,27 @@ function createBlock(){
      block6 = {sockets: 0, left: 0, up: 0, right: 0, down: 0 }; */
     switch (i){
         case 1:
-            currBlock = new elem(this, 2, currBlockId, 0, 1, 0, 1);
+            currBlock = new Elem(this, 2, currBlockId, 0, 1, 0, 1);
             break;
         case 2:
-            currBlock = new elem(this, 1, currBlockId, 0, 1, 0, 0);
+            currBlock = new Elem(this, 1, currBlockId, 0, 1, 0, 0);
             break;
         case 3:
-            currBlock = new elem(this, 4, currBlockId, 1, 1, 1, 1);
+            currBlock = new Elem(this, 4, currBlockId, 1, 1, 1, 1);
             break;
         case 4:
-            currBlock = new elem(this, 2, currBlockId, 1, 1, 0, 0);
+            currBlock = new Elem(this, 2, currBlockId, 1, 1, 0, 0);
             break;
         case 5:
-            currBlock = new elem(this, 3, currBlockId, 1, 1, 0, 1);
+            currBlock = new Elem(this, 3, currBlockId, 1, 1, 0, 1);
             break;
         case 6:
-            currBlock = new elem(this, 0, currBlockId, 0, 0, 0, 0);
+            currBlock = new Elem(this, 0, currBlockId, 0, 0, 0, 0);
             break;
     }
     gameState = 2; /* the block movement */
-    canUpdate = false;
-    setTimeout(function(){ canUpdate=true;}, 1000);
+    //canUpdate = false;
+    //setTimeout(function(){ canUpdate=true;}, 1000);
 }
 
 
@@ -236,6 +244,7 @@ function doChain(){
         delChain(ex[8*(arrY-1)+arrX].head);
     } else {
         addChain();
+        //alert("after addChain");
     }
 }
 
@@ -245,15 +254,16 @@ function isBomb(el){
 
 /* remove html element and "ex" array element*/
 function delBomb(){
-    $("#"+currBlockId).hide("explode",{pieces:32},200);
+    $("#"+currBlockId).hide("explode",{pieces:32},300);
     $("#myaudio")[0].play();
     $("#"+currBlockId).remove();
     ex[8*arrY+arrX] = null;
 }
 
 function delBlock(x){
-    $("#"+ex[x].id).hide("explode",{pieces:16},100);
-    $("#myaudio")[1].play();
+    //alert("del x: "+x);
+    $("#"+ex[x].id).hide("explode",{pieces:16},300);
+    //$("#myaudio")[1].play();
     $("#"+ex[x].id).remove();
     ex[x] = null;
 }
@@ -261,16 +271,20 @@ function delBlock(x){
 function addChain(){
     /* first element */
     if(graphPointer == 0){
-        graph.data = currBlock;
-        graph.next = null;
-        graph.open = currBlock.sockets;
-
+        //alert("first element in chain: "+graph);
+        var newGraph = {};
+        newGraph.data = currBlock;
+        //alert("middle");
+        newGraph.next = null;
+        newGraph.open = currBlock.sockets;
+        graph = newGraph;
         currBlock.head = graph;
         graphPointer++;
+        //alert("end of first element in chain");
     } else {
+        //alert("2 block");
         newConnection=true;
 
-        // TODO add find connection AND unite 2 chain !!!
         if(currBlock.right == 1) {
             // if it is the connection
             if((arrX+1 <= 7) && (ex[8*arrY+arrX+1] != null) && (ex[8*arrY+arrX+1].left == 1)) {
@@ -281,14 +295,14 @@ function addChain(){
         }
         if(currBlock.down == 1) {
             // if it is the connection
-            if( (arrY-1 >= 0) && (ex[8*(arrY-1)+arrX] != null) && (ex[8*(arrY-1)+arrX].top == 1) ){
+            if( (arrY-1 >= 0) && (ex[8*(arrY-1)+arrX] != null) && (ex[8*(arrY-1)+arrX].up == 1) ){
                 // first connection
                 if(newConnection) {
                     currBlock.head = ex[8*(arrY-1)+arrX].head;
                     addElem();
                     newConnection = false;
                 } else {
-                    // second connection. unite 2 chain
+                    // second connection. unite 2 chains
                     var te = ex[8*(arrY-1)+arrX].head;
                     currBlock.head.open += (te.open-2);
                     var de = te.data;
@@ -305,37 +319,83 @@ function addChain(){
             }
         }
         if(currBlock.left == 1) {
-        // TODO
+            // if it's connection
+            if((arrX-1 >=0) && (ex[8*arrY+arrX-1] != null) && (ex[8*arrY+arrX-1].right == 1)) {
+                if(newConnection){
+                    currBlock.head = ex[8*arrY+arrX-1].head;
+                    addElem();
+                    newConnection = false;
+                } else {
+                    // unite 2 chains
+                    te = ex[8*arrY+arrX-1].head; // current GRAPH elem (for destroy)
+                    currBlock.head.open += (te.open-2);
+                    de = te.data; // first block element in chain which will be remove
+                    delGraphElem(te); // delete GRAPH element
+                    te = de; // first elem
+                    while(de.next != null){
+                        de.head = currBlock.head;
+                        de = de.next;
+                    }
+                    de.head = currBlock.head;
+                    de.next = currBlock.head.data;
+                    currBlock.head.data = te;
+                }
+            }
         }
-        if(currBlock.top == 1) {
-        // TODO
+        if(currBlock.up == 1) {
+            // if there's connection
+            if((arrY+1 <= 9) && (ex[8*(arrY+1)+arrX] != null) && (ex[8*(arrY+1)+arrX].down == 1)){
+                alert("top conn");
+                if(newConnection){
+                    currBlock.head = ex[8*(arrY+1)+arrX].head;
+                    addElem();
+                    newConnection = false;
+                } else {
+                    te = ex[8*(arrY+1)+arrX].head; // current GRAPH elem (for destroy)
+                    currBlock.head.open += (te.open-2);
+                    de = te.data; // first block element in chain which will be remove
+                    delGraphElem(te); // delete GRAPH element
+                    te = de; // first elem
+                    while(de.next != null){
+                        de.head = currBlock.head;
+                        de = de. next;
+                    }
+                    de.head = currBlock.head;
+                    de.next = currBlock.head.data;
+                    currBlock.head.data = te;
+                }
+            }
         }
         // the currBlock didn't connected to anyone
 
         if(newConnection){
+            //alert('new graph');
             // go to the end of existed chain
-            var temp = graph;
+  /*          var temp = graph;
             for(var t=0; t<graphPointer-1; t++){
                 temp = temp.next;
-            }
-            var newGraph = new graph();
+            }*/
+            var newGraph = {};
             newGraph.data = currBlock;
-            newGraph.next = null;
+            newGraph.next = graph;
             newGraph.open = currBlock.sockets;
-
+            graph = newGraph;
             currBlock.head = newGraph;
-            temp.next = newGraph;
+            //temp.next = newGraph;
             graphPointer++;
         }
 
+        // closed chain of elements; need to destroy without bomb
         if(currBlock.head.open == 0) {
             delChain(currBlock.head);
+            //alert(" after del chain");
             graphPointer--;
         }
     }
 }
 
 function addElem(){
+    //alert('add element');
     currBlock.next = currBlock.head.data;
     currBlock.head.data = currBlock;
     currBlock.head.open += (currBlock.sockets - 2);
@@ -344,22 +404,33 @@ function addElem(){
 /* remove html elements and 'ex' array elements from thead*/
 function delChain(thead){
     /* this timeout for animation (for prevent creation a new block before full  explosion */
-    canUpdate = false;
-    setTimeout(function(){ canUpdate = true},1000);
+ /*   var ttt = thead.data;
+    while(ttt != null){
+        alert(ttt.x);
+        ttt = ttt.next;
+    }*/
+
+    //canUpdate = false;
+    //setTimeout(function(){ canUpdate = true},1000);
 
     delGraphElem(thead);
-
     var temp = thead.data;
     var a = temp.next;
-    while(a){
+
+    //alert(temp.x);
+    //alert(a.x);
+    while(a != null){
         delBlock(temp.x);
+        //alert("after del elem");
         temp = a;
         a = temp.next;
     }
     delBlock(temp.x);
-    thead.data = null;
+    //thead.data = null;
+    //thead = null;
 }
 
+// delete element in list GRAPH
 function delGraphElem(h){
     if(h.data.id == graph.data.id) {
         graph = h.next;
@@ -395,7 +466,7 @@ function getStatus(x, y){
     return false;
 }
 
-// set ex[8y+x] pointer to currBox; currBox.x -> ex[8*y+x]
+// set ex[8y+x] pointer to currBox; currBox.x -> 8*y+x
 function setStatus(x, y, box){
     ex[8*y+x] = box;
     box.x = 8*y+x;
