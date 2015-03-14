@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/2.png" afterPath="$PROJECT_DIR$/images/2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/3.png" afterPath="$PROJECT_DIR$/images/3.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/4.png" afterPath="$PROJECT_DIR$/images/4.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/script.js" afterPath="$PROJECT_DIR$/js/script.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -40,8 +43,8 @@
       <file leaf-file-name="script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32469776" vertical-offset="3569" max-vertical-offset="7616">
-              <caret line="256" column="51" selection-start-line="256" selection-start-column="51" selection-end-line="256" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.23661485" vertical-offset="2634" max-vertical-offset="7854">
+              <caret line="198" column="38" selection-start-line="198" selection-start-column="38" selection-end-line="198" selection-end-column="38" />
               <folding>
                 <element signature="n#!!block;n#keyHand#0" expanded="false" />
                 <element signature="n#!!block;n#gameoverScreen#0" expanded="false" />
@@ -298,7 +301,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426258517170</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="done all connection. setInterval was replaced by setTimeout">
+      <created>1426336259714</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1426336259714</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -348,7 +357,8 @@
     <MESSAGE value="key handle fix, create animation timeout" />
     <MESSAGE value="Add &quot;graph&quot; -  linked list, and did logical func with create and del chain" />
     <MESSAGE value="Add unite 2 chain" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add unite 2 chain" />
+    <MESSAGE value="done all connection. setInterval was replaced by setTimeout" />
+    <option name="LAST_COMMIT_MESSAGE" value="done all connection. setInterval was replaced by setTimeout" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -364,21 +374,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/images/6.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/3.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/4.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/5.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
@@ -404,15 +399,30 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/images/5.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/4.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/images/2.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/3.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32469776" vertical-offset="3569" max-vertical-offset="7616">
-          <caret line="256" column="51" selection-start-line="256" selection-start-column="51" selection-end-line="256" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.23661485" vertical-offset="2634" max-vertical-offset="7854">
+          <caret line="198" column="38" selection-start-line="198" selection-start-column="38" selection-end-line="198" selection-end-column="38" />
           <folding>
             <element signature="n#!!block;n#keyHand#0" expanded="false" />
             <element signature="n#!!block;n#gameoverScreen#0" expanded="false" />

@@ -196,8 +196,8 @@ function createBlock(){
     $(block).uniqueId();
     currBlockId = $(block).prop('id');
     /* calc random index of next element in [1..6] */
-    var i = Math.floor(Math.random()*2) + 1;
-    //i=2;
+    var i = Math.floor(Math.random()*6) + 1;
+    //i=3;
     var imgSrc="images/" + i + ".png";
     $(block).attr("src",imgSrc);
     $(block).appendTo("#cont");
@@ -217,10 +217,10 @@ function createBlock(){
             currBlock = new Elem(this, 1, currBlockId, 0, 1, 0, 0);
             break;
         case 3:
-            currBlock = new Elem(this, 4, currBlockId, 1, 1, 1, 1);
+            currBlock = new Elem(this, 2, currBlockId, 1, 1, 0, 0);
             break;
         case 4:
-            currBlock = new Elem(this, 2, currBlockId, 1, 1, 0, 0);
+            currBlock = new Elem(this, 4, currBlockId, 1, 1, 1, 1);
             break;
         case 5:
             currBlock = new Elem(this, 3, currBlockId, 1, 1, 0, 1);
@@ -240,7 +240,7 @@ function doChain(){
     if(isBomb(currBlock)) {
         delBomb();
         /* if not lie on bottom */
-        if( (arrY-1) > 0)
+        if( (arrY-1) >= 0)
         delChain(ex[8*(arrY-1)+arrX].head);
     } else {
         addChain();
@@ -300,69 +300,87 @@ function addChain(){
                 if(newConnection) {
                     currBlock.head = ex[8*(arrY-1)+arrX].head;
                     addElem();
+                    //alert(graph.open);
                     newConnection = false;
                 } else {
-                    // second connection. unite 2 chains
-                    var te = ex[8*(arrY-1)+arrX].head;
-                    currBlock.head.open += (te.open-2);
-                    var de = te.data;
-                    delGraphElem(te);
-                    te = de;
-                    while(de.next != null){
+                    // second connection. unite 2 different chains
+                    if(currBlock.head !== ex[8*(arrY-1)+arrX].head ) {
+                        var te = ex[8 * (arrY - 1) + arrX].head;
+                        currBlock.head.open += (te.open - 2);
+                        var de = te.data;
+                        delGraphElem(te);
+                        te = de;
+                        while (de.next != null) {
+                            de.head = currBlock.head;
+                            de = de.next;
+                        }
                         de.head = currBlock.head;
-                        de = de.next;
+                        de.next = currBlock.head.data;
+                        currBlock.head.data = te;
+                    } else {
+                        currBlock.head.open -= 2;
                     }
-                    de.head = currBlock.head;
-                    de.next = currBlock.head.data;
-                    currBlock.head.data = te;
                 }
             }
         }
         if(currBlock.left == 1) {
+            //alert("LEFT = 1");
             // if it's connection
             if((arrX-1 >=0) && (ex[8*arrY+arrX-1] != null) && (ex[8*arrY+arrX-1].right == 1)) {
                 if(newConnection){
+                    //alert("LEFT NEW CONNECTION");
                     currBlock.head = ex[8*arrY+arrX-1].head;
                     addElem();
+                    //alert(graph.data.next.x);
                     newConnection = false;
                 } else {
-                    // unite 2 chains
-                    te = ex[8*arrY+arrX-1].head; // current GRAPH elem (for destroy)
-                    currBlock.head.open += (te.open-2);
-                    de = te.data; // first block element in chain which will be remove
-                    delGraphElem(te); // delete GRAPH element
-                    te = de; // first elem
-                    while(de.next != null){
+                    // unite 2 chains if it's DIFFERENT chains
+                    if(currBlock.head !== ex[8 * arrY + arrX - 1].head) {
+                        //alert("Left connection. unite 2 chains");
+                        te = ex[8*arrY + arrX - 1].head; // current GRAPH elem (for destroy)
+                        currBlock.head.open += (te.open - 2);
+                        //alert(currBlock.head.open);
+                        de = te.data; // first block element in chain which will be remove
+                        delGraphElem(te); // delete GRAPH element
+                        te = de; // first elem
+                        while (de.next != null) {
+                            de.head = currBlock.head;
+                            de = de.next;
+                        }
                         de.head = currBlock.head;
-                        de = de.next;
+                        de.next = currBlock.head.data;
+                        currBlock.head.data = te;
+                    } else {
+                        //alert("It's ONE chains");
+                        currBlock.head.open -= 2;
                     }
-                    de.head = currBlock.head;
-                    de.next = currBlock.head.data;
-                    currBlock.head.data = te;
+
                 }
             }
         }
         if(currBlock.up == 1) {
             // if there's connection
             if((arrY+1 <= 9) && (ex[8*(arrY+1)+arrX] != null) && (ex[8*(arrY+1)+arrX].down == 1)){
-                alert("top conn");
+                //alert("top conn");
                 if(newConnection){
                     currBlock.head = ex[8*(arrY+1)+arrX].head;
                     addElem();
                     newConnection = false;
                 } else {
-                    te = ex[8*(arrY+1)+arrX].head; // current GRAPH elem (for destroy)
-                    currBlock.head.open += (te.open-2);
-                    de = te.data; // first block element in chain which will be remove
-                    delGraphElem(te); // delete GRAPH element
-                    te = de; // first elem
-                    while(de.next != null){
+                    if(currBlock.head !== ex[8*(arrY+1)+arrX].head) {
+                        te = ex[8 * (arrY + 1) + arrX].head; // current GRAPH elem (for destroy)
+                        currBlock.head.open += (te.open - 2);
+                        de = te.data; // first block element in chain which will be remove
+                        delGraphElem(te); // delete GRAPH element
+                        te = de; // first elem
+                        while (de.next != null) {
+                            de.head = currBlock.head;
+                            de = de.next;
+                        }
                         de.head = currBlock.head;
-                        de = de. next;
-                    }
-                    de.head = currBlock.head;
-                    de.next = currBlock.head.data;
-                    currBlock.head.data = te;
+                        de.next = currBlock.head.data;
+                        currBlock.head.data = te;
+                    } else currBlock.head.open -=2;
                 }
             }
         }
@@ -387,6 +405,7 @@ function addChain(){
 
         // closed chain of elements; need to destroy without bomb
         if(currBlock.head.open == 0) {
+            //alert(" del chain: "+currBlock.head);
             delChain(currBlock.head);
             //alert(" after del chain");
             graphPointer--;
@@ -403,16 +422,8 @@ function addElem(){
 
 /* remove html elements and 'ex' array elements from thead*/
 function delChain(thead){
-    /* this timeout for animation (for prevent creation a new block before full  explosion */
- /*   var ttt = thead.data;
-    while(ttt != null){
-        alert(ttt.x);
-        ttt = ttt.next;
-    }*/
 
-    //canUpdate = false;
-    //setTimeout(function(){ canUpdate = true},1000);
-
+    //alert(thead);
     delGraphElem(thead);
     var temp = thead.data;
     var a = temp.next;
@@ -432,10 +443,13 @@ function delChain(thead){
 
 // delete element in list GRAPH
 function delGraphElem(h){
+    //alert("del graph elem. head: "+h.data.x);
     if(h.data.id == graph.data.id) {
         graph = h.next;
+        //alert(graph);
         return;
     }
+    //alert("WWWWWWWWWWWWWWW");
     var temp = graph;
     while(temp.next.data.id != h.data.id){
         temp = temp.next;
