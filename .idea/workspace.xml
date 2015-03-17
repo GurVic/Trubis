@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68e32687-9f2c-46f3-a82e-39d06504a43c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/script.js" afterPath="$PROJECT_DIR$/js/script.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Trubis.iws" />
@@ -307,11 +304,17 @@
       <option name="project" value="LOCAL" />
       <updated>1426343796534</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="code clean up">
+      <created>1426602292106</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1426602292106</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -359,7 +362,8 @@
     <MESSAGE value="Add unite 2 chain" />
     <MESSAGE value="done all connection. setInterval was replaced by setTimeout" />
     <MESSAGE value="all game logic done" />
-    <option name="LAST_COMMIT_MESSAGE" value="all game logic done" />
+    <MESSAGE value="code clean up" />
+    <option name="LAST_COMMIT_MESSAGE" value="code clean up" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
