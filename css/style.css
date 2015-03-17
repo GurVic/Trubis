@@ -2,6 +2,7 @@
     width: 200px;
     height: 400px;
     background-color: #333333;
+    color: aliceblue;
     float: left;
     text-align: center;
     margin: 20px;
@@ -21,6 +22,7 @@ button {
     width: 100px;
 }
 .gameoverscreen {
+    color: aliceblue;
     position:absolute;
     left:100px;
     top:50px;

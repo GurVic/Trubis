@@ -15,6 +15,8 @@ var inter;
 var time = 100;
 var iterat;
 var canUpdate = true;
+var isMusic = false;
+var isGame=false;
 
 var graph = {open: 0, data: null, next: null}; // open - open sockets in all chain; data - pointer to graphElem
 var graphElem = {data: null, next: null}; // data - currBlock;
@@ -43,10 +45,13 @@ function Elem(head, sock, id, left, up, right, down) {
 $(document).ready(function(){
     $("#score").fadeOut();
     $("#level").fadeOut();
+    $("#cube").fadeOut();
 
     $("#play").click(function() {
+        isGame = true;
         $("#score").fadeIn().html(score);
         $("#level").fadeIn().html(level);
+        $("#cube").fadeIn().html(cubeNum);
         $("#cont").html("");
         newGame();
     });
@@ -55,12 +60,28 @@ $(document).ready(function(){
         $("#cont").html("<h1>Simple game Trubis</h1><p>Move left - A</p><p>Move right - D</p><p>Rotate - W</p><p>Drop - S</p>");
     });
     $("#config").click(function(){
+        if(isGame){
+            location.reload(true);
+            isGame = false;
+        }
+        $("#cont").html("<input type='checkbox' id='check' onclick='chclick()'><label for='check'>Music</label>" +
+        "<p><b>Level</b><br><input type='radio' name='level' onclick='radclick(1)' value='1' checked>1<br>" +
+        "<input type='radio' name='level' onclick='radclick(2)' value='2'>2<br>" +
+        "<input type='radio' name='level' onclick='radclick(3)' value='3'>3<br></p>");
     });
 });
 
+function radclick(v){
+    level = v;
+}
+
+function chclick(){
+    isMusic = !isMusic;
+}
+
 function keyHand(e){
     e = e || window.event;
-    score = e.keyCode;
+    if(gameState == 3) return;
     switch(e.keyCode) {
         case 65: /* A */
             if (canMove("left")) {
@@ -96,7 +117,9 @@ function keyHand(e){
 }
 
 /* start GAME from the beginning */
+var cubeNum = 0;
 function newGame(){
+    difficulty = 800-level*100;
     newConnection = true;
     graph.data = null;
     graph.next = null;
@@ -106,7 +129,7 @@ function newGame(){
     graphPointer = 0;
     iterat = 0;
     score = 0;
-    level = 1;
+    //level = 1;
     lines = 1;
     currBlock = null;
     currBlockId = 0;
@@ -116,17 +139,17 @@ function newGame(){
     arrX = 0;
     arrY = 9;
     canUpdate = true;
+    if($("#check").prop("checked")) {
+        isMusic  = true;
+    }
     /* refresh array */
     for(var i=0; i<80; i++) ex[i]=null;
-    //clearInterval(inter);
     gameState = 1; /* we can create new block */
 
     /* this for non duplicate event handler, when press again 'Play' */
     $(document).off('keydown', keyHand);
     /*  handle keys event */
     $(document).on('keydown', keyHand);
-    /* create game loop with id=inter */
-    //inter = setInterval(update,time);
     setTimeout(update, time);
 }
 
@@ -135,13 +158,11 @@ function newGame(){
 function update(){
     if(canUpdate) {
         iterat++;
-       $("#score").html("left: " + graphPointer);
-/*        $("#level").html("up: " + currBlock.up);
-        $("#line").html("right: " + currBlock.right);
-        $("#cube").html("down: " + currBlock.down); */
+        $("#score").html("Score: " + score);
+        $("#level").html("Level: " + level);
+        $("#cube").html("cube: " + cubeNum);
         if (lines > 7) {
             /* stop game loop*/
-            //clearInterval(inter);
             $("#" + currBlockId).css("left", posX);
             $("#" + currBlockId).css("top", posY);
             gameoverScreen();
@@ -156,12 +177,10 @@ function update(){
             } else
             if (gameState == 2) {
                 if (iterat >= difficulty / time) {
-                    //alert("state 2");
                     if (canMove("down")) {
                         posY += 30;
                         arrY--;
                     } else {
-                        //alert("x: "+arrX+" y: "+arrY);
                         setStatus(arrX, arrY, currBlock);
                         lines = getMaxLine();
                         gameState = 3;
@@ -172,12 +191,10 @@ function update(){
                 $("#" + currBlockId).css("top", posY);
             } else
             if (gameState == 3) {
-                //alert("3 state");
                 $("#" + currBlockId).css("left", posX);
                 $("#" + currBlockId).css("top", posY);
                 /* find connection and determination bomb */
                 doChain();
-                //alert("after doChain")
                 gameState = 1;
             }
 
@@ -197,18 +214,11 @@ function createBlock(){
     currBlockId = $(block).prop('id');
     /* calc random index of next element in [1..6] */
     var i = Math.floor(Math.random()*6) + 1;
-    //i=3;
     var imgSrc="images/" + i + ".png";
     $(block).attr("src",imgSrc);
     $(block).appendTo("#cont");
     $(block).css("left", posX);
     $(block).css("top", posY);
-    /* block1 = {sockets: 2, left: 0, up: 1, right: 0, down: 1 };
-     block2 = {sockets: 1, left: 0, up: 1, right: 0, down: 0 };
-     block3 = {sockets: 4, left: 1, up: 1, right: 1, down: 1 };
-     block4 = {sockets: 2, left: 1, up: 1, right: 0, down: 0 };
-     block5 = {sockets: 3, left: 1, up: 1, right: 0, down: 1 };
-     block6 = {sockets: 0, left: 0, up: 0, right: 0, down: 0 }; */
     switch (i){
         case 1:
             currBlock = new Elem(this, 2, currBlockId, 0, 1, 0, 1);
@@ -230,8 +240,7 @@ function createBlock(){
             break;
     }
     gameState = 2; /* the block movement */
-    //canUpdate = false;
-    //setTimeout(function(){ canUpdate=true;}, 1000);
+    cubeNum++;
 }
 
 
@@ -244,7 +253,6 @@ function doChain(){
         delChain(ex[8*(arrY-1)+arrX].head);
     } else {
         addChain();
-        //alert("after addChain");
     }
 }
 
@@ -252,37 +260,40 @@ function isBomb(el){
     return el.sockets == 0;
 }
 
+
 /* remove html element and "ex" array element*/
 function delBomb(){
     $("#"+currBlockId).hide("explode",{pieces:32},300);
-    $("#myaudio")[0].play();
+    if(isMusic) {
+        $("#myaudio")[0].play();
+    }
     $("#"+currBlockId).remove();
     ex[8*arrY+arrX] = null;
 }
 
 function delBlock(x){
-    //alert("del x: "+x);
     $("#"+ex[x].id).hide("explode",{pieces:16},300);
-    //$("#myaudio")[1].play();
     $("#"+ex[x].id).remove();
     ex[x] = null;
+    if(score++ % 20 == 0) {
+        level++;
+        if(difficulty > 200) {
+            difficulty -=100;
+        }
+    }
 }
 
 function addChain(){
     /* first element */
     if(graphPointer == 0){
-        //alert("first element in chain: "+graph);
         var newGraph = {};
         newGraph.data = currBlock;
-        //alert("middle");
         newGraph.next = null;
         newGraph.open = currBlock.sockets;
         graph = newGraph;
         currBlock.head = graph;
         graphPointer++;
-        //alert("end of first element in chain");
     } else {
-        //alert("2 block");
         newConnection=true;
 
         if(currBlock.right == 1) {
@@ -300,7 +311,6 @@ function addChain(){
                 if(newConnection) {
                     currBlock.head = ex[8*(arrY-1)+arrX].head;
                     addElem();
-                    //alert(graph.open);
                     newConnection = false;
                 } else {
                     // second connection. unite 2 different chains
@@ -324,22 +334,17 @@ function addChain(){
             }
         }
         if(currBlock.left == 1) {
-            //alert("LEFT = 1");
             // if it's connection
             if((arrX-1 >=0) && (ex[8*arrY+arrX-1] != null) && (ex[8*arrY+arrX-1].right == 1)) {
                 if(newConnection){
-                    //alert("LEFT NEW CONNECTION");
                     currBlock.head = ex[8*arrY+arrX-1].head;
                     addElem();
-                    //alert(graph.data.next.x);
                     newConnection = false;
                 } else {
                     // unite 2 chains if it's DIFFERENT chains
                     if(currBlock.head !== ex[8 * arrY + arrX - 1].head) {
-                        //alert("Left connection. unite 2 chains");
                         te = ex[8*arrY + arrX - 1].head; // current GRAPH elem (for destroy)
                         currBlock.head.open += (te.open - 2);
-                        //alert(currBlock.head.open);
                         de = te.data; // first block element in chain which will be remove
                         delGraphElem(te); // delete GRAPH element
                         te = de; // first elem
@@ -351,7 +356,6 @@ function addChain(){
                         de.next = currBlock.head.data;
                         currBlock.head.data = te;
                     } else {
-                        //alert("It's ONE chains");
                         currBlock.head.open -= 2;
                     }
 
@@ -361,7 +365,6 @@ function addChain(){
         if(currBlock.up == 1) {
             // if there's connection
             if((arrY+1 <= 9) && (ex[8*(arrY+1)+arrX] != null) && (ex[8*(arrY+1)+arrX].down == 1)){
-                //alert("top conn");
                 if(newConnection){
                     currBlock.head = ex[8*(arrY+1)+arrX].head;
                     addElem();
@@ -387,34 +390,24 @@ function addChain(){
         // the currBlock didn't connected to anyone
 
         if(newConnection){
-            //alert('new graph');
-            // go to the end of existed chain
-  /*          var temp = graph;
-            for(var t=0; t<graphPointer-1; t++){
-                temp = temp.next;
-            }*/
             var newGraph = {};
             newGraph.data = currBlock;
             newGraph.next = graph;
             newGraph.open = currBlock.sockets;
             graph = newGraph;
             currBlock.head = newGraph;
-            //temp.next = newGraph;
             graphPointer++;
         }
 
         // closed chain of elements; need to destroy without bomb
         if(currBlock.head.open == 0) {
-            //alert(" del chain: "+currBlock.head);
             delChain(currBlock.head);
-            //alert(" after del chain");
             graphPointer--;
         }
     }
 }
 
 function addElem(){
-    //alert('add element');
     currBlock.next = currBlock.head.data;
     currBlock.head.data = currBlock;
     currBlock.head.open += (currBlock.sockets - 2);
@@ -423,33 +416,24 @@ function addElem(){
 /* remove html elements and 'ex' array elements from thead*/
 function delChain(thead){
 
-    //alert(thead);
     delGraphElem(thead);
     var temp = thead.data;
     var a = temp.next;
 
-    //alert(temp.x);
-    //alert(a.x);
     while(a != null){
         delBlock(temp.x);
-        //alert("after del elem");
         temp = a;
         a = temp.next;
     }
     delBlock(temp.x);
-    //thead.data = null;
-    //thead = null;
 }
 
 // delete element in list GRAPH
 function delGraphElem(h){
-    //alert("del graph elem. head: "+h.data.x);
     if(h.data.id == graph.data.id) {
         graph = h.next;
-        //alert(graph);
         return;
     }
-    //alert("WWWWWWWWWWWWWWW");
     var temp = graph;
     while(temp.next.data.id != h.data.id){
         temp = temp.next;
@@ -464,9 +448,9 @@ function gameoverScreen(){
     $(gameover).attr("id", "gameoverscreen");
     $(gameover).html("<h2>Game Over</h2><p class='counter'>"+score+"</p><h2>Retry?</h2>");
     $(gameover).css("cursor", "pointer");
-
     $(gameover).click(function() {
         location.reload(true);
+        isGame = false;
     });
     $(gameover).prependTo("#cont");
 }
